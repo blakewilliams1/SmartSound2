@@ -9,7 +9,7 @@ public class SoundRunnable implements Runnable{
     private AudioManager audioMan;
     private int maxVolume;
     private int currVolume;
-    private volatile boolean running = true;
+    private volatile boolean running = false;
 
     public SoundRunnable(AudioManager audio){
         audioMan=audio;
@@ -38,7 +38,7 @@ public class SoundRunnable implements Runnable{
 
     public void run() {
         Log.i("Thread","maxVolume="+maxVolume);
-        while(running&&!Thread.currentThread().isInterrupted()) {
+        while(running) {
             try {
                 Log.i("Thread", "loop: ");
                 Thread.sleep(1500);
@@ -58,9 +58,17 @@ public class SoundRunnable implements Runnable{
         Log.i("Thread","Exiting run loop");
     }
 
-    public void interrupt(){
+    public void pauseRunnable(){
         running =false;
-        Log.i("Thread","Interrupt was called");
+        Log.i("Thread","pauseThread was called");
+    }
 
+    public void resumeRunnable(){
+        running =true;
+        Log.i("Thread","resumeThread was called");
+    }
+
+    public boolean isRunning(){
+        return running;
     }
 }

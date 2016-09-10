@@ -20,19 +20,22 @@ public class MainActivity extends AppCompatActivity {
         AudioManager audio  = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         runner = new SoundRunnable(audio);
+        runner.resumeRunnable();
         speedThread = new Thread(runner);
+        speedThread.start();
 
         //setup button
         final Button button = (Button) findViewById(R.id.threadButton);
         button.setText(R.string.start);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(speedThread.isInterrupted()){
+                if(runner.isRunning()){
                     button.setText(R.string.start);
-                    speedThread.interrupt();
+                    runner.pauseRunnable();
                 }else{
                     button.setText(R.string.stop);
-                    speedThread.start();
+                    runner.resumeRunnable();
+                    runner.run();
                 }
             }
         });
@@ -43,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         Log.i("Activity","Calling interrupt on thread");
         //TODO: make sure you have proper mechanisms for stopping threads
-        runner.interrupt();
+        runner.pauseRunnable();
         speedThread.interrupt();
     }
 }

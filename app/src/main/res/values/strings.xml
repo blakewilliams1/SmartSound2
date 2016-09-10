@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SmartSound 2</string>
+    <string name="app_name">SmartSound</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
 </resources>
