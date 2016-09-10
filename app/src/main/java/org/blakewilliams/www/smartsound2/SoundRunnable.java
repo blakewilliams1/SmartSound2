@@ -9,13 +9,15 @@ public class SoundRunnable implements Runnable{
     private AudioManager audioMan;
     private int maxVolume;
     private int currVolume;
-    private volatile boolean running = false;
+    private int originalVolume;
+    //private volatile boolean running = false;
 
     public SoundRunnable(AudioManager audio){
         audioMan=audio;
         maxVolume=audioMan.getStreamMaxVolume(AudioManager.STREAM_MUSIC);;
         locator=new Clocation(new Location("MainActivity"));
         currVolume = audioMan.getStreamVolume(AudioManager.STREAM_MUSIC);
+        originalVolume=currVolume;
     }
 
     //returns 0 to 1 multiplier for how to adjust volume based on speed
@@ -38,7 +40,7 @@ public class SoundRunnable implements Runnable{
 
     public void run() {
         Log.i("Thread","maxVolume="+maxVolume);
-        while(running) {
+        while(!Thread.currentThread().isInterrupted()) {
             try {
                 Log.i("Thread", "loop: ");
                 Thread.sleep(1500);
@@ -49,16 +51,20 @@ public class SoundRunnable implements Runnable{
                     audioMan.setStreamVolume(AudioManager.STREAM_MUSIC, currVolume, 0);
                     Log.i("Thread", "Reassigned volume to be: " + currVolume);
                 }
-            } catch (Exception e) {
-                e.getLocalizedMessage();
-                Thread.currentThread().interrupt();
+            } catch(InterruptedException e){
+                Log.i("Thread","INTERUPTION");
+                audioMan.setStreamVolume(AudioManager.STREAM_MUSIC, originalVolume, 0);
+                return;
+            } catch(Exception e) {
+                Log.i("Thread","Caught a general exception");
+                audioMan.setStreamVolume(AudioManager.STREAM_MUSIC, originalVolume, 0);
                 return;
             }
         }
         Log.i("Thread","Exiting run loop");
     }
 
-    public void pauseRunnable(){
+    /*public void pauseRunnable(){
         running =false;
         Log.i("Thread","pauseThread was called");
     }
@@ -71,4 +77,9 @@ public class SoundRunnable implements Runnable{
     public boolean isRunning(){
         return running;
     }
+
+    public boolean getFlag(){
+        return running;
+    }*/
+
 }
