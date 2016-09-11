@@ -24,7 +24,7 @@ public class SoundRunnable implements Runnable{
     //returns 0 to 1 multiplier for how to adjust volume based on speed
     //TODO: Find go on test drives to fine tune these values
     float getSpeedMultiplier(){
-        double speed = locator.getSpeed();
+        double speed = locator.getImperialSpeed();
         if(speed<10){
             return 0.6f;
         }else if(speed<20){

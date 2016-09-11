@@ -21,8 +21,7 @@ public class MainActivity extends AppCompatActivity {
         AudioManager audio  = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         runner = new SoundRunnable(audio,this);
-        speedThread = new Thread(runner);
-        speedThread.start();
+        startThread();
         createThreadButton();
 
     }
@@ -35,12 +34,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(speedThread!=null){
                     button.setText(R.string.start);
-                    speedThread.interrupt();
-                    speedThread=null;
+                    stopThread();
                 }else{
                     button.setText(R.string.stop);
-                   speedThread =  new Thread(runner);
-                    speedThread.start();
+                    startThread();
                 }
             }
         });
@@ -55,5 +52,15 @@ public class MainActivity extends AppCompatActivity {
             speedThread.interrupt();
             speedThread=null;
         }
+    }
+
+    private void startThread(){
+        speedThread =  new Thread(runner);
+        speedThread.start();
+    }
+
+    private void stopThread(){
+        speedThread.interrupt();
+        speedThread=null;
     }
 }
