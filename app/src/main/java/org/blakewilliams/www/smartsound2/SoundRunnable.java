@@ -1,21 +1,22 @@
 package org.blakewilliams.www.smartsound2;
 
-import android.location.Location;
+import android.content.Context;
 import android.util.Log;
 import android.media.AudioManager;
 
 public class SoundRunnable implements Runnable{
-    private Clocation locator;
+    private GPSpeed locator;
     private AudioManager audioMan;
     private int maxVolume;
     private int currVolume;
     private int originalVolume;
-    //private volatile boolean running = false;
+    private Context mContext;
 
-    public SoundRunnable(AudioManager audio){
+    public SoundRunnable(AudioManager audio, Context context){
+        mContext=context;
         audioMan=audio;
         maxVolume=audioMan.getStreamMaxVolume(AudioManager.STREAM_MUSIC);;
-        locator=new Clocation(new Location("MainActivity"));
+        locator=new GPSpeed(context);
         currVolume = audioMan.getStreamVolume(AudioManager.STREAM_MUSIC);
         originalVolume=currVolume;
     }
@@ -25,21 +26,20 @@ public class SoundRunnable implements Runnable{
     float getSpeedMultiplier(){
         double speed = locator.getSpeed();
         if(speed<10){
-            return 0.5f;
-        }else if(speed<20){
             return 0.6f;
-        }else if(speed<30){
+        }else if(speed<20){
             return 0.7f;
-        }else if(speed<40){
+        }else if(speed<30){
             return 0.8f;
-        }else if(speed<50){
+        }else if(speed<40){
             return 0.9f;
+        }else if(speed<50){
+            return 0.95f;
         }
          return 1f;
     }
 
     public void run() {
-        Log.i("Thread","maxVolume="+maxVolume);
         while(!Thread.currentThread().isInterrupted()) {
             try {
                 Log.i("Thread", "loop: ");
@@ -63,23 +63,5 @@ public class SoundRunnable implements Runnable{
         }
         Log.i("Thread","Exiting run loop");
     }
-
-    /*public void pauseRunnable(){
-        running =false;
-        Log.i("Thread","pauseThread was called");
-    }
-
-    public void resumeRunnable(){
-        running =true;
-        Log.i("Thread","resumeThread was called");
-    }
-
-    public boolean isRunning(){
-        return running;
-    }
-
-    public boolean getFlag(){
-        return running;
-    }*/
 
 }
