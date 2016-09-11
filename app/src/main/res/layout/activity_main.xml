@@ -18,12 +18,4 @@
         android:layout_centerHorizontal="true"
         android:background="#f44336" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Current Speed"
-        android:id="@+id/speedText"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="39dp" />
 </RelativeLayout>

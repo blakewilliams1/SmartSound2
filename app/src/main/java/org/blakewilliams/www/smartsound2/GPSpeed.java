@@ -1,7 +1,9 @@
 package org.blakewilliams.www.smartsound2;
 
+import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -13,10 +15,17 @@ public class GPSpeed implements LocationListener {
     private long prevTime;
     private double currMetricSpeed;
 
-    GPSpeed(){
+    GPSpeed(Context c){
         prevLocation= new Location("GPSpeed");
         prevTime= System.currentTimeMillis();
-
+        LocationManager locationManager = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
+        try {
+            //TODO: ask for permsission at runtime
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        }catch(SecurityException e) {
+            Log.i("DEBUG","Permission not granted");
+            e.printStackTrace();
+        }
     }
 
     public double getSpeed(){
@@ -35,7 +44,7 @@ public class GPSpeed implements LocationListener {
 
         currMetricSpeed = deltaMeters/(deltaMillis/1000);
 
-        //Log.i("Geo_Location", "Latitude: " + latitude + ", Longitude: " + longitude);
+        Log.i("Geo_Location", "Latitude: " + latitude + ", Longitude: " + longitude);
 
         prevLocation.setLatitude(latitude);
         prevLocation.setLongitude(longitude);

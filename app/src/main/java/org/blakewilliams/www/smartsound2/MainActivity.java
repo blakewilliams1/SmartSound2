@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity {
     //TODO: build a 1x1 widget to toggle threads on/off
     Thread speedThread;
     SoundRunnable runner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,11 +20,10 @@ public class MainActivity extends AppCompatActivity {
 
         AudioManager audio  = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        runner = new SoundRunnable(audio);
+        runner = new SoundRunnable(audio,this);
         speedThread = new Thread(runner);
         speedThread.start();
         createThreadButton();
-
 
     }
 
