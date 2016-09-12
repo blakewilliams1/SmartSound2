@@ -25,6 +25,7 @@
         android:id="@+id/timeoutSwitch"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:checked="false" />
+        android:checked="false"
+        android:theme="@style/AppTheme"/>
 
 </RelativeLayout>

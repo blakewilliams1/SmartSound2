@@ -9,6 +9,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.widget.Button;
 
 /**
  * Created by Blake on 9/11/2016.
@@ -18,8 +19,10 @@ public class GPSpeed implements LocationListener {
     Location prevLocation;
     private long prevTime;
     private double currMetricSpeed;
+    private MainActivity active;
 
     GPSpeed(Context c){
+        active = (MainActivity)c;
         prevLocation= new Location("GPSpeed");
         prevTime= System.currentTimeMillis();
         LocationManager locationManager = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
@@ -55,6 +58,7 @@ public class GPSpeed implements LocationListener {
         float deltaMillis = System.currentTimeMillis()-prevTime;
 
         currMetricSpeed = deltaMeters/(deltaMillis/1000);
+        currMetricSpeed = currMetricSpeed>53.644?0:currMetricSpeed;
 
         //Log.i("Geo_Location", "Latitude: " + latitude + ", Longitude: " + longitude);
 
@@ -62,6 +66,7 @@ public class GPSpeed implements LocationListener {
         prevLocation.setLongitude(longitude);
         prevTime= System.currentTimeMillis();
 
+        //((Button)active.findViewById(R.id.threadButton)).setText(Double.toString(getImperialSpeed()));
     }
 
     @Override

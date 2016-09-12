@@ -16,7 +16,7 @@ import android.widget.Switch;
 
 public class MainActivity extends AppCompatActivity {
     //TODO: build a 1x1 widget to toggle threads on/off
-    private Thread speedThread;
+    public Thread speedThread;
     private SoundRunnable runner;
     private NotificationManager notificationManager;
 
@@ -53,10 +53,8 @@ public class MainActivity extends AppCompatActivity {
         threadButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(speedThread!=null){
-                    threadButton.setText(R.string.start);
                     stopThread();
                 }else{
-                    threadButton.setText(R.string.stop);
                     startThread();
                 }
             }
@@ -86,12 +84,22 @@ public class MainActivity extends AppCompatActivity {
     private void startThread(){
         speedThread =  new Thread(runner);
         speedThread.start();
+        final Button threadButton = (Button) findViewById(R.id.threadButton);
+        threadButton.setText(R.string.stop);
         initNotification();
     }
 
     public void stopThread(){
         speedThread.interrupt();
         speedThread=null;
+        final Button threadButton = (Button) findViewById(R.id.threadButton);
+        threadButton.setText(R.string.start);
         notificationManager.cancel(1337);
+    }
+
+    class ThreadStopper implements Runnable{
+        public void run() {
+            stopThread();
+        }
     }
 }

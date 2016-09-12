@@ -1,8 +1,10 @@
 package org.blakewilliams.www.smartsound2;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.util.Log;
 import android.media.AudioManager;
+import android.widget.Button;
 
 public class SoundRunnable implements Runnable{
     private GPSpeed locator;
@@ -33,9 +35,9 @@ public class SoundRunnable implements Runnable{
         }else if(speed<35){
             return 0.8f;
         }else if(speed<45){
-            return 0.9f;
+            return 0.85f;
         }else if(speed<55){
-            return 0.95f;
+            return 0.92f;
         }else if(speed>=75) {
             return 1f;
         }
@@ -61,6 +63,7 @@ public class SoundRunnable implements Runnable{
                 return;
             } catch(Exception e) {
                 Log.i("Thread","Caught a general exception");
+
                 audioMan.setStreamVolume(AudioManager.STREAM_MUSIC, originalVolume, 0);
                 return;
             }
@@ -76,9 +79,17 @@ public class SoundRunnable implements Runnable{
         }
         float timeOutMinutes = System.currentTimeMillis()-timeOutTime;
         timeOutMinutes = ((timeOutMinutes)/1000)/60;
-        if(timeOutMinutes>5){
+        if(timeOutMinutes>0.1){
             //signal thread interrupt
-            mContext.stopThread();
+            mContext.runOnUiThread(new Runnable() {
+                public void run() {
+                    mContext.speedThread.interrupt();
+                    final Button threadButton = (Button) mContext.findViewById(R.id.threadButton);
+                    threadButton.setText(R.string.start);
+                    NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(mContext.NOTIFICATION_SERVICE);
+                    notificationManager.cancel(1337);
+                }
+            });
         }
     }
     
