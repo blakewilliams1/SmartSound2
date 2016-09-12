@@ -7,8 +7,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+
 import android.util.Log;
 
 /**
@@ -48,6 +47,7 @@ public class GPSpeed implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
+        Log.i("LOCATION","Location changed");
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
 

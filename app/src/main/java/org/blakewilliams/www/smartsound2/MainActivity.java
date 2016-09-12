@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.media.AudioManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +12,7 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Switch;
 
 public class MainActivity extends AppCompatActivity {
     //TODO: build a 1x1 widget to toggle threads on/off
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
         runner = new SoundRunnable(audio,this);
         startThread();
-        createThreadButton();
+        initUI();
     }
 
     private void initNotification(){
@@ -46,19 +46,28 @@ public class MainActivity extends AppCompatActivity {
         notificationManager.notify(1337, notification);
     }
 
-    private void createThreadButton() {
-        //setup button
-        final Button button = (Button) findViewById(R.id.threadButton);
-        button.setText(R.string.start);
-        button.setOnClickListener(new View.OnClickListener() {
+    private void initUI() {
+        //setup threadButton
+        final Button threadButton = (Button) findViewById(R.id.threadButton);
+        threadButton.setText(R.string.stop );
+        threadButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(speedThread!=null){
-                    button.setText(R.string.start);
+                    threadButton.setText(R.string.start);
                     stopThread();
                 }else{
-                    button.setText(R.string.stop);
+                    threadButton.setText(R.string.stop);
                     startThread();
                 }
+            }
+        });
+        //setup timeout switch
+        //setup timeoutSwitch
+        final Switch timeoutSwitch = (Switch) findViewById(R.id.timeoutSwitch);
+        timeoutSwitch.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.i("DEBUG","switch was toggled. set flag in runnable");
+                runner.setTimeout(timeoutSwitch.isChecked());
             }
         });
     }
@@ -80,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         initNotification();
     }
 
-    private void stopThread(){
+    public void stopThread(){
         speedThread.interrupt();
         speedThread=null;
         notificationManager.cancel(1337);
