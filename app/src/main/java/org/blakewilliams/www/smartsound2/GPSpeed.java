@@ -31,7 +31,7 @@ public class GPSpeed implements LocationListener {
                 ActivityCompat.requestPermissions((Activity)c,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},PERSONAL_LOCATION_REQUEST_CODE);
             }*/
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 3, this);
         }catch(SecurityException e) {
             Log.i("DEBUG","Permission not granted");
             e.printStackTrace();

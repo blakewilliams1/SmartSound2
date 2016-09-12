@@ -2,4 +2,5 @@
     <string name="app_name">SmartSound</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
+    <string name="notificationDescription">Smart Sound is running. Swipe to close</string>
 </resources>

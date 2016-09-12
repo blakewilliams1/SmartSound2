@@ -25,9 +25,7 @@ public class SoundRunnable implements Runnable{
     //TODO: Find go on test drives to fine tune these values
     float getSpeedMultiplier(){
         double speed = locator.getImperialSpeed();
-        if(speed<10){
-            return 0.6f;
-        }else if(speed<20){
+        if(speed<20){
             return 0.7f;
         }else if(speed<30){
             return 0.8f;
@@ -43,7 +41,7 @@ public class SoundRunnable implements Runnable{
         while(!Thread.currentThread().isInterrupted()) {
             try {
                 Log.i("Thread", "loop: ");
-                Thread.sleep(1500);
+                Thread.sleep(1000);
                 float multi = getSpeedMultiplier();
                 int newVolume = Math.round(multi * maxVolume);
                 if (newVolume != currVolume) {
