@@ -79,7 +79,7 @@ public class SoundRunnable implements Runnable{
         }
         float timeOutMinutes = System.currentTimeMillis()-timeOutTime;
         timeOutMinutes = ((timeOutMinutes)/1000)/60;
-        if(timeOutMinutes>0.1){
+        if(timeOutMinutes>5){
             //signal thread interrupt
             mContext.runOnUiThread(new Runnable() {
                 public void run() {

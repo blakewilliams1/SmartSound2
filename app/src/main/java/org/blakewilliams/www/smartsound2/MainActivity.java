@@ -97,9 +97,4 @@ public class MainActivity extends AppCompatActivity {
         notificationManager.cancel(1337);
     }
 
-    class ThreadStopper implements Runnable{
-        public void run() {
-            stopThread();
-        }
-    }
 }
