@@ -8,15 +8,16 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.widget.Button;
 
 /**
  * Created by Blake on 9/11/2016.
  */
 public class GPSpeed implements LocationListener {
     private int PERSONAL_LOCATION_REQUEST_CODE = 123;
-    Location prevLocation;
+    private Location prevLocation;
     private long prevTime;
     private double currMetricSpeed;
     private MainActivity active;
@@ -27,12 +28,11 @@ public class GPSpeed implements LocationListener {
         prevTime= System.currentTimeMillis();
         LocationManager locationManager = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
         try {
-            /*int permissionCheck = ContextCompat.checkSelfPermission(c,Manifest.permission.ACCESS_FINE_LOCATION);
+            int permissionCheck = ContextCompat.checkSelfPermission(c,Manifest.permission.ACCESS_FINE_LOCATION);
             if(permissionCheck==-1){
-                //TODO: ask for permission at runtime
                 ActivityCompat.requestPermissions((Activity)c,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},PERSONAL_LOCATION_REQUEST_CODE);
-            }*/
+            }
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 3, this);
         }catch(SecurityException e) {
             Log.i("DEBUG","Permission not granted");
