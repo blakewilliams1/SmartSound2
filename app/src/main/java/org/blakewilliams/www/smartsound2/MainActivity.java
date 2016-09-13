@@ -7,18 +7,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Switch;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
+
 
 public class MainActivity extends AppCompatActivity {
     //TODO: build a 1x1 widget to toggle threads on/off
@@ -31,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-    private GoogleApiClient client;
+    //private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +41,20 @@ public class MainActivity extends AppCompatActivity {
         runner = new SoundRunnable(audio, this);
         startThread();
         initUI();
+        initWidgets();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+       // client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    private void initWidgets(){
+        //setup threadButton
+        final ImageButton widgetButton = (ImageButton) findViewById(R.id.widgetButton);
+        widgetButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.i("Widget","The widget has been pressed");
+            }
+        });
     }
 
     private void initNotification() {
@@ -76,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //setup timeout switch
-        //setup timeoutSwitch
         final Switch timeoutSwitch = (Switch) findViewById(R.id.timeoutSwitch);
         timeoutSwitch.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -119,30 +127,23 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case PERSONAL_LOCATION_REQUEST_CODE: {
                 // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    //  task you need to do.
-
-                } else {
-
+                if (grantResults.length <= 0
+                        || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    //permission was not granted. Exit app
                     finish();
                 }
                 return;
             }
         }
     }
+
     @Override
     public void onBackPressed() {
         //Overrides default action of signalling the app to close (thereby ending the background thread)
-        //Launches the intent of returning to home screen to 'minimize' app 
+        //Launches the intent of returning to home screen to 'minimize' app
         Intent startMain = new Intent(Intent.ACTION_MAIN);
         startMain.addCategory(Intent.CATEGORY_HOME);
         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(startMain);
     }
-    /*
-
-     */
 }
