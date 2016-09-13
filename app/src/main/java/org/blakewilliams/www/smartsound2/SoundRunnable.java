@@ -72,7 +72,6 @@ public class SoundRunnable implements Runnable{
     }
     
     private void checkTimeout(){
-        //TODO: getting abnormally large results from getImperialSpeed when running in debug
         double speed = locator.getImperialSpeed();
         if( locator.getImperialSpeed()>5){
             timeOutTime = System.currentTimeMillis();

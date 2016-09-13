@@ -18,11 +18,11 @@ import android.widget.Switch;
 
 
 public class MainActivity extends AppCompatActivity {
-    //TODO: build a 1x1 widget to toggle threads on/off
     public Thread speedThread;
     private SoundRunnable runner;
     private NotificationManager notificationManager;
     private final int PERSONAL_LOCATION_REQUEST_CODE = 123;
+    private SpeedWidget widget;
 
 
     @Override
@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.activity_main);
 
+        widget = new SpeedWidget(this);
 	    AudioManager audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 	    setVolumeControlStream(AudioManager.STREAM_MUSIC);
 	    runner = new SoundRunnable(audio, this);
@@ -84,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void startThread() {
+    public void startThread() {
         speedThread = new Thread(runner);
         speedThread.start();
         final Button threadButton = (Button) findViewById(R.id.threadButton);
