@@ -13,7 +13,6 @@ import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Switch;
 
 
@@ -25,36 +24,17 @@ public class MainActivity extends AppCompatActivity {
     private NotificationManager notificationManager;
     private final int PERSONAL_LOCATION_REQUEST_CODE = 123;
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    //private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+	    super.onCreate(savedInstanceState);
+	    setContentView(R.layout.activity_main);
 
-        AudioManager audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        runner = new SoundRunnable(audio, this);
-        startThread();
-        initUI();
-        initWidgets();
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-       // client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-    }
-
-    private void initWidgets(){
-        //setup threadButton
-        final ImageButton widgetButton = (ImageButton) findViewById(R.id.widgetButton);
-        widgetButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Log.i("Widget","The widget has been pressed");
-            }
-        });
+	    AudioManager audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+	    setVolumeControlStream(AudioManager.STREAM_MUSIC);
+	    runner = new SoundRunnable(audio, this);
+	    startThread();
+	    initUI();
     }
 
     private void initNotification() {
@@ -98,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.i("Activity", "Calling interrupt on thread");
-        //TODO: make sure you have proper mechanisms for stopping threads
         if (speedThread != null) {
             speedThread.interrupt();
             speedThread = null;
