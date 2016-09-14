@@ -18,10 +18,7 @@ public class SpeedWidget extends AppWidgetProvider {
 	private MainActivity activity;
 
 	//TODO: make SpeedWidget obtain MainActivity instance on creation
-	public SpeedWidget() {
-	}
-
-	;
+	public SpeedWidget() {}
 
 	public SpeedWidget(Context c) {
 		activity = (MainActivity) c;
@@ -31,15 +28,6 @@ public class SpeedWidget extends AppWidgetProvider {
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		// There may be multiple widgets active, so update all of them
 		for (int appWidgetId : appWidgetIds) {
-			Intent intent = new Intent(context, SpeedWidget.class);
-			intent.setAction(YOUR_AWESOME_ACTION);
-			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-			// Get the layout for the App Widget and attach an on-click listener to the button
-			RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.speed_widget);
-			views.setOnClickPendingIntent(R.id.widgetButton, pendingIntent);
-
-			// Tell the AppWidgetManager to perform an update on the current App Widget
-			appWidgetManager.updateAppWidget(appWidgetId, views);
 			updateAppWidget(context, appWidgetManager, appWidgetId);
 		}
 	}
@@ -76,6 +64,7 @@ public class SpeedWidget extends AppWidgetProvider {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		super.onReceive(context, intent);
+
 		if (intent.getAction().equals(YOUR_AWESOME_ACTION)) {
 			if(activity!=null) {
 				activity.runOnUiThread(new Runnable() {
@@ -97,6 +86,5 @@ public class SpeedWidget extends AppWidgetProvider {
 			}
 		}
 	}
-
 }
 
