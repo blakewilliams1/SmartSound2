@@ -46,11 +46,12 @@ public class SpeedWidget extends AppWidgetProvider {
 	static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
 	                            int appWidgetId) {
 
-		Intent intent = new Intent(context, SpeedWidget.class);
+		Intent intent = new Intent(context, MainActivity.class);
 		intent.setAction(YOUR_AWESOME_ACTION);
+		intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
 		//intent.putExtra("Goal",context.getString(R.string.stopThread));
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
 		// Get the layout for the App Widget and attach an on-click listener
 		// to the button

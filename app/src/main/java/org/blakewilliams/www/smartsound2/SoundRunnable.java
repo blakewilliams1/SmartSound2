@@ -26,22 +26,15 @@ public class SoundRunnable implements Runnable{
         timeOutTime=System.currentTimeMillis();
     }
 
-    //returns 0 to 1 multiplier for how to adjust volume based on speed
-    //TODO: Find go on test drives to fine tune these values
-    float getSpeedMultiplier(){
+    int getNewVolume(){
         double speed = locator.getImperialSpeed();
-        if(speed<25){
-            return 0.7f;
-        }else if(speed<35){
-            return 0.8f;
-        }else if(speed<45){
-            return 0.85f;
+        if(speed<10){
+            return maxVolume-3;
+        }else if(speed<25){
+            return maxVolume-2;
         }else if(speed<55){
-            return 0.92f;
-        }else if(speed>=75) {
-            return 1f;
-        }
-        return 0.7f;
+            return maxVolume-1;
+        }else return maxVolume;
     }
 
     public void run() {
@@ -50,10 +43,11 @@ public class SoundRunnable implements Runnable{
                 Log.i("Thread", "loop: ");
                 Thread.sleep(1000);
                 if(timeoutFlag)checkTimeout();
-                float multi = getSpeedMultiplier();
-                int newVolume = Math.round(multi * maxVolume);
+                //float multi = getSpeedMultiplier();
+                //int newVolume = Math.round(multi * maxVolume);
+                int newVolume = getNewVolume();
                 if (newVolume != currVolume) {
-                    currVolume = Math.round(multi * maxVolume);
+                    currVolume = newVolume;
                     audioMan.setStreamVolume(AudioManager.STREAM_MUSIC, currVolume, 0);
                     Log.i("Thread", "Reassigned volume to be: " + currVolume);
                 }
