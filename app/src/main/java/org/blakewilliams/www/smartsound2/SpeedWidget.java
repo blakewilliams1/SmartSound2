@@ -1,13 +1,10 @@
 package org.blakewilliams.www.smartsound2;
 
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
-import android.widget.Button;
 import android.widget.RemoteViews;
 
 /**
@@ -15,14 +12,7 @@ import android.widget.RemoteViews;
  */
 public class SpeedWidget extends AppWidgetProvider {
 
-	private MainActivity activity;
-
-	//TODO: make SpeedWidget obtain MainActivity instance on creation
 	public SpeedWidget() {}
-
-	public SpeedWidget(Context c) {
-		activity = (MainActivity) c;
-	}
 
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -60,30 +50,5 @@ public class SpeedWidget extends AppWidgetProvider {
 		appWidgetManager.updateAppWidget(appWidgetId, views);
 	}
 
-	@Override
-	public void onReceive(Context context, Intent intent) {
-		super.onReceive(context, intent);
-		//TODO: Make widget functional
-		/*if (intent.getAction().equals(MainActivity.WIDGET_TOGGLE_ACTION)) {
-			if(activity!=null) {
-				activity.runOnUiThread(new Runnable() {
-					public void run() {
-						if (activity.speedThread != null) {
-							Log.i("Widget", "Stopping thread from widget");
-							activity.speedThread.interrupt();
-							activity.speedThread = null;
-							final Button threadButton = (Button) activity.findViewById(R.id.threadButton);
-							threadButton.setText(R.string.start);
-							NotificationManager notificationManager = (NotificationManager) activity.getSystemService(activity.NOTIFICATION_SERVICE);
-							notificationManager.cancel(1337);
-						} else {
-							Log.i("Widget", "Starting thread from widget");
-							activity.startThread();
-						}
-					}
-				});
-			}
-		}*/
-	}
 }
 

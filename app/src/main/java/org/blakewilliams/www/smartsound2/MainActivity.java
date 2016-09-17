@@ -3,6 +3,7 @@ package org.blakewilliams.www.smartsound2;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,11 +15,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
 	public static String WIDGET_TOGGLE_ACTION = "WidgetToggleAction";
 	public static String NOTIFICATION_CLICK_ACTION = "NotificationClickAction";
+	public static String WIDGET_UPDATE_ICON = "WidetUpdateIcon";
 	public Thread speedThread;
 	private SoundRunnable runner;
 	private NotificationManager notificationManager;
@@ -51,9 +54,21 @@ public class MainActivity extends AppCompatActivity {
 				//Toggle the thread on/off
 				Log.i("Activity","Toggle widget");
 				toggleThread();
+				toastNotification();
 				onBackPressed();
 			}
 		}
+	}
+
+	private void toastNotification(){
+		String message = "SmartSound is now ";
+		if(speedThread!=null)message += "on.";
+		else message += "off.";
+		message+= " Press widget again to turn ";
+		if(speedThread!=null)message += "off.";
+		else message += "on.";
+		Toast.makeText(getApplicationContext(),message
+				, Toast.LENGTH_LONG).show();
 	}
 
 	private void initNotification() {
