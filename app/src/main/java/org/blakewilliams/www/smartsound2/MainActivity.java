@@ -3,7 +3,6 @@ package org.blakewilliams.www.smartsound2;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,7 +20,6 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 	public static String WIDGET_TOGGLE_ACTION = "WidgetToggleAction";
 	public static String NOTIFICATION_CLICK_ACTION = "NotificationClickAction";
-	public static String WIDGET_UPDATE_ICON = "WidetUpdateIcon";
 	public Thread speedThread;
 	private SoundRunnable runner;
 	private NotificationManager notificationManager;
@@ -33,11 +31,19 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		if (speedThread!=null)Log.i("Activity","Second call to onCreate");
 		AudioManager audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		runner = new SoundRunnable(audio, this);
 		initUI();
+
+		Intent i = getIntent();
+		String goal = i.getAction();
+		if(goal!=null){
+			if(goal.equals(WIDGET_TOGGLE_ACTION)){
+				startThread();
+				onBackPressed();
+			}
+		}
 	}
 
 	@Override
@@ -52,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
 				finish();
 			}else if(action.equals(WIDGET_TOGGLE_ACTION)){
 				//Toggle the thread on/off
-				Log.i("Activity","Toggle widget");
 				toggleThread();
 				toastNotification();
 				onBackPressed();
@@ -101,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
 		final Switch timeoutSwitch = (Switch) findViewById(R.id.timeoutSwitch);
 		timeoutSwitch.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				Log.i("DEBUG", "switch was toggled. set flag in runnable");
 				runner.setTimeout(timeoutSwitch.isChecked());
 			}
 		});
@@ -110,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		Log.i("Activity", "Calling interrupt on thread");
 		if (speedThread != null) {
 			speedThread.interrupt();
 			speedThread = null;
