@@ -28,15 +28,6 @@ public class MainActivity extends AppCompatActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Intent intent = getIntent();
-		if(intent!=null) {
-			String action = intent.getAction();
-			if (action!=null&&action.equals(NOTIFICATION_CLICK_ACTION)){
-				//Turn off the thread and exit the app
-				stopThread();
-				finish();
-			}
-		}
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
@@ -48,10 +39,24 @@ public class MainActivity extends AppCompatActivity {
 		initUI();
 	}
 
+	@Override
+	protected void onNewIntent(Intent intent){
+		super.onNewIntent(intent);
+		if(intent!=null) {
+			String action = intent.getStringExtra(NOTIFICATION_CLICK_ACTION);
+			if(action!=null){
+				//Turn off the thread and exit the app
+				stopThread();
+				finish();
+			}
+		}
+	}
+
 	private void initNotification() {
 		Intent i = new Intent(this, MainActivity.class);
-		i.setAction(NOTIFICATION_CLICK_ACTION);
-		PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
+		i.putExtra(NOTIFICATION_CLICK_ACTION,NOTIFICATION_CLICK_ACTION);
+		i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		PendingIntent pi = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
 		Notification notification = new NotificationCompat.Builder(this)
 				.setSmallIcon(R.drawable.ic_stat_name)
 				.setContentTitle(getString(R.string.app_name))

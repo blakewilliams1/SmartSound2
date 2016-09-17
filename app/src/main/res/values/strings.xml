@@ -2,7 +2,7 @@
     <string name="app_name">SmartSound</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
-    <string name="notificationDescription">Smart Sound is running.</string>
+    <string name="notificationDescription">Smart Sound is running. Tap to stop</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="stopThread">Stop Thread</string>
