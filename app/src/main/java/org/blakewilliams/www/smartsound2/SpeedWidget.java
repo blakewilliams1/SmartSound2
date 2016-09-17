@@ -14,7 +14,7 @@ import android.widget.RemoteViews;
  * Implementation of App Widget functionality.
  */
 public class SpeedWidget extends AppWidgetProvider {
-	public static String YOUR_AWESOME_ACTION = "YourAwesomeAction";
+
 	private MainActivity activity;
 
 	//TODO: make SpeedWidget obtain MainActivity instance on creation
@@ -46,17 +46,17 @@ public class SpeedWidget extends AppWidgetProvider {
 	static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
 	                            int appWidgetId) {
 
-		Intent intent = new Intent(context, MainActivity.class);
-		intent.setAction(YOUR_AWESOME_ACTION);
-		intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		//Intent intent = new Intent(context, MainActivity.class);
+		//intent.setAction(WIDGET_TOGGLE_ACTION);
+		//intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
 		//intent.putExtra("Goal",context.getString(R.string.stopThread));
-		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+		//PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
 		// Get the layout for the App Widget and attach an on-click listener
 		// to the button
 		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.speed_widget);
-		views.setOnClickPendingIntent(R.id.widgetButton, pendingIntent);
+		//views.setOnClickPendingIntent(R.id.widgetButton, pendingIntent);
 
 		// Instruct the widget manager to update the widget
 		appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -65,8 +65,8 @@ public class SpeedWidget extends AppWidgetProvider {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		super.onReceive(context, intent);
-
-		if (intent.getAction().equals(YOUR_AWESOME_ACTION)) {
+		//TODO: Make widget functional
+		/*if (intent.getAction().equals(MainActivity.WIDGET_TOGGLE_ACTION)) {
 			if(activity!=null) {
 				activity.runOnUiThread(new Runnable() {
 					public void run() {
@@ -85,7 +85,7 @@ public class SpeedWidget extends AppWidgetProvider {
 					}
 				});
 			}
-		}
+		}*/
 	}
 }
 

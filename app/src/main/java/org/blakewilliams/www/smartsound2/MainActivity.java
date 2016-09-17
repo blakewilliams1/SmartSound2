@@ -17,20 +17,31 @@ import android.widget.Switch;
 
 
 public class MainActivity extends AppCompatActivity {
+	public static String WIDGET_TOGGLE_ACTION = "WidgetToggleAction";
+	public static String NOTIFICATION_CLICK_ACTION = "NotificationClickAction";
 	public Thread speedThread;
 	private SoundRunnable runner;
 	private NotificationManager notificationManager;
 	private final int PERSONAL_LOCATION_REQUEST_CODE = 123;
-	private SpeedWidget widget;
+	//private SpeedWidget widget;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Intent intent = getIntent();
+		if(intent!=null) {
+			String action = intent.getAction();
+			if (action!=null&&action.equals(NOTIFICATION_CLICK_ACTION)){
+				//Turn off the thread and exit the app
+				stopThread();
+				finish();
+			}
+		}
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
 		if (speedThread!=null)Log.i("Activity","Second call to onCreate");
-		widget = new SpeedWidget(this);
+		//widget = new SpeedWidget(this);
 		AudioManager audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		runner = new SoundRunnable(audio, this);
@@ -38,7 +49,9 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void initNotification() {
-		PendingIntent pi = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0);
+		Intent i = new Intent(this, MainActivity.class);
+		i.setAction(NOTIFICATION_CLICK_ACTION);
+		PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
 		Notification notification = new NotificationCompat.Builder(this)
 				.setSmallIcon(R.drawable.ic_stat_name)
 				.setContentTitle(getString(R.string.app_name))
@@ -46,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 				.setContentIntent(pi)
 				.setAutoCancel(true)
 				.build();
+		notification.flags = Notification.FLAG_ONGOING_EVENT;
 
 		notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		notificationManager.notify(1337, notification);
@@ -92,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	public void stopThread() {
+		if(speedThread==null)return;
 		speedThread.interrupt();
 		speedThread = null;
 		final Button threadButton = (Button) findViewById(R.id.threadButton);
