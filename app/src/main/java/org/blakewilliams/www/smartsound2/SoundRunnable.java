@@ -28,7 +28,7 @@ public class SoundRunnable implements Runnable{
 
     int getNewVolume(){
         double speed = locator.getImperialSpeed();
-        if(speed<10){
+        if(speed<8){
             return maxVolume-3;
         }else if(speed<25){
             return maxVolume-2;
