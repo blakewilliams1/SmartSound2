@@ -50,7 +50,6 @@ public class GPSpeed implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.i("LOCATION","Location changed");
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
 

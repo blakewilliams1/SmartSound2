@@ -46,17 +46,15 @@ public class SpeedWidget extends AppWidgetProvider {
 	static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
 	                            int appWidgetId) {
 
-		//Intent intent = new Intent(context, MainActivity.class);
-		//intent.setAction(WIDGET_TOGGLE_ACTION);
-		//intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-		//intent.putExtra("Goal",context.getString(R.string.stopThread));
-		//PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+		Intent intent = new Intent(context, MainActivity.class);
+		intent.setAction(MainActivity.WIDGET_TOGGLE_ACTION);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		// Get the layout for the App Widget and attach an on-click listener
 		// to the button
 		RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.speed_widget);
-		//views.setOnClickPendingIntent(R.id.widgetButton, pendingIntent);
+		views.setOnClickPendingIntent(R.id.widgetButton, pendingIntent);
 
 		// Instruct the widget manager to update the widget
 		appWidgetManager.updateAppWidget(appWidgetId, views);

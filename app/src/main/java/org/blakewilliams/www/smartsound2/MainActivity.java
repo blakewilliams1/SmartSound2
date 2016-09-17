@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
 	private SoundRunnable runner;
 	private NotificationManager notificationManager;
 	private final int PERSONAL_LOCATION_REQUEST_CODE = 123;
-	//private SpeedWidget widget;
 
 
 	@Override
@@ -32,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_main);
 
 		if (speedThread!=null)Log.i("Activity","Second call to onCreate");
-		//widget = new SpeedWidget(this);
 		AudioManager audio = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 		runner = new SoundRunnable(audio, this);
@@ -43,18 +41,24 @@ public class MainActivity extends AppCompatActivity {
 	protected void onNewIntent(Intent intent){
 		super.onNewIntent(intent);
 		if(intent!=null) {
-			String action = intent.getStringExtra(NOTIFICATION_CLICK_ACTION);
-			if(action!=null){
+			String action = intent.getAction();
+			if(action==null)return;
+			else if(action.equals(NOTIFICATION_CLICK_ACTION)){
 				//Turn off the thread and exit the app
 				stopThread();
 				finish();
+			}else if(action.equals(WIDGET_TOGGLE_ACTION)){
+				//Toggle the thread on/off
+				Log.i("Activity","Toggle widget");
+				toggleThread();
+				onBackPressed();
 			}
 		}
 	}
 
 	private void initNotification() {
 		Intent i = new Intent(this, MainActivity.class);
-		i.putExtra(NOTIFICATION_CLICK_ACTION,NOTIFICATION_CLICK_ACTION);
+		i.setAction(NOTIFICATION_CLICK_ACTION);
 		i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		PendingIntent pi = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
 		Notification notification = new NotificationCompat.Builder(this)
@@ -75,11 +79,7 @@ public class MainActivity extends AppCompatActivity {
 		final Button threadButton = (Button) findViewById(R.id.threadButton);
 		threadButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				if (speedThread != null) {
-					stopThread();
-				} else {
-					startThread();
-				}
+				toggleThread();
 			}
 		});
 		//setup timeout switch
@@ -99,6 +99,15 @@ public class MainActivity extends AppCompatActivity {
 		if (speedThread != null) {
 			speedThread.interrupt();
 			speedThread = null;
+		}
+	}
+
+	//Used to toggle thread on and off. Primarily made to reduce duplicate code
+	private void toggleThread(){
+		if (speedThread != null) {
+			stopThread();
+		} else {
+			startThread();
 		}
 	}
 
