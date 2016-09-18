@@ -21,7 +21,7 @@
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Turn off after 5 minutes"
+        android:text="Turn off after 5 minutes of no driving"
         android:id="@+id/timeoutSwitch"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
