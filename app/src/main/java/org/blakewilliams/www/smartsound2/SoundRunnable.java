@@ -2,7 +2,7 @@ package org.blakewilliams.www.smartsound2;
 
 import android.app.NotificationManager;
 import android.content.Context;
-//import android.util.Log;
+import android.util.Log;
 import android.media.AudioManager;
 import android.widget.Button;
 
@@ -40,7 +40,7 @@ public class SoundRunnable implements Runnable{
     public void run() {
         while(!Thread.currentThread().isInterrupted()) {
             try {
-                //Log.i("Thread", "loop: ");
+                Log.i("Thread", "loop: ");
                 Thread.sleep(1000);
                 if(timeoutFlag)checkTimeout();
                 //float multi = getSpeedMultiplier();
@@ -49,20 +49,20 @@ public class SoundRunnable implements Runnable{
                 if (newVolume != currVolume) {
                     currVolume = newVolume;
                     audioMan.setStreamVolume(AudioManager.STREAM_MUSIC, currVolume, 0);
-                   // Log.i("Thread", "Reassigned volume to be: " + currVolume);
+                    Log.i("Thread", "Reassigned volume to be: " + currVolume);
                 }
             } catch(InterruptedException e){
-                //Log.i("Thread","INTERUPTION");
+                Log.i("Thread","INTERUPTION");
                 audioMan.setStreamVolume(AudioManager.STREAM_MUSIC, originalVolume, 0);
                 return;
             } catch(Exception e) {
-                //Log.i("Thread","Caught a general exception");
+                Log.i("Thread","Caught a general exception");
 
                 audioMan.setStreamVolume(AudioManager.STREAM_MUSIC, originalVolume, 0);
                 return;
             }
         }
-        //Log.i("Thread","Exiting run loop");
+        Log.i("Thread","Exiting run loop");
     }
     
     private void checkTimeout(){
