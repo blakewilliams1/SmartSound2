@@ -5,8 +5,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
@@ -107,9 +109,23 @@ public class MainActivity extends AppCompatActivity {
 		final Switch timeoutSwitch = (Switch) findViewById(R.id.timeoutSwitch);
 		timeoutSwitch.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				//pass info off to thread
 				runner.setTimeout(timeoutSwitch.isChecked());
+				//save the new state in prefs for later use on next activity launch
+				SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+				SharedPreferences.Editor editor = preferences.edit();
+				editor.putBoolean("timeOutSwitch",timeoutSwitch.isChecked());    //name is the key so may use a username or whatever you want
+				editor.commit();
 			}
 		});
+		timeoutSwitch.setChecked(getSavedSwitchState());
+	}
+
+	boolean getSavedSwitchState() {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		if (preferences == null) return false;
+		boolean switchEnabled = preferences.getBoolean("timeOutSwitch", false); //false because you probably want that as your default value
+		return switchEnabled;
 	}
 
 	@Override
